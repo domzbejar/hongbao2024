@@ -1,0 +1,1 @@
+{"version":3,"file":"hongbaoTypes.js","sourceRoot":"","sources":["../../src/helper/hongbaoTypes.ts"],"names":[],"mappings":"AAGA,MAAqB,WAAW;;AACrB,uBAAW,GAAc;IAC5B,WAAW,EAAG,CAAC;IACf,SAAS,EAAG,CAAC;IACb,OAAO,EAAG,CAAC;IACX,UAAU,EAAG,CAAC;IACd,QAAQ,EAAG,CAAC;IACZ,QAAQ,EAAG,CAAC;IACZ,cAAc,EAAC,CAAC;IAChB,QAAQ,EAAG,CAAC;IACZ,SAAS,EAAG,CAAC;CAChB,CAAA;eAXgB,WAAW"}
