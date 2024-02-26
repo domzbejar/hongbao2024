@@ -1,0 +1,13 @@
+
+lamp.png
+size: 46, 59
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+lamp
+  rotate: false
+  xy: 2, 2
+  size: 42, 55
+  orig: 42, 55
+  offset: 0, 0
+  index: -1

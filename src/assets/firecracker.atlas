@@ -1,0 +1,20 @@
+
+firecracker.png
+size: 396, 88
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+body
+  rotate: true
+  xy: 2, 5
+  size: 78, 374
+  orig: 78, 374
+  offset: 0, 0
+  index: -1
+dynamite
+  rotate: true
+  xy: 378, 2
+  size: 81, 16
+  orig: 81, 16
+  offset: 0, 0
+  index: -1

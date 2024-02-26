@@ -1,0 +1,482 @@
+/******************************************************************************
+ * Spine Runtimes License Agreement
+ * Last updated July 28, 2023. Replaces all prior versions.
+ *
+ * Copyright (c) 2013-2023, Esoteric Software LLC
+ *
+ * Integration of the Spine Runtimes into software or otherwise creating
+ * derivative works of the Spine Runtimes is permitted under the terms and
+ * conditions of Section 2 of the Spine Editor License Agreement:
+ * http://esotericsoftware.com/spine-editor-license
+ *
+ * Otherwise, it is permitted to integrate the Spine Runtimes into software or
+ * otherwise create derivative works of the Spine Runtimes (collectively,
+ * "Products"), provided that each user of the Products must obtain their own
+ * Spine Editor license and redistribution of the Products in any form must
+ * include this license and copyright notice.
+ *
+ * THE SPINE RUNTIMES ARE PROVIDED BY ESOTERIC SOFTWARE LLC "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ESOTERIC SOFTWARE LLC BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
+ * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE
+ * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *****************************************************************************/
+import { PathAttachment } from "./attachments/PathAttachment.js";
+import { RotateMode, SpacingMode, PositionMode } from "./PathConstraintData.js";
+import { Utils, MathUtils } from "./Utils.js";
+/** Stores the current pose for a path constraint. A path constraint adjusts the rotation, translation, and scale of the
+ * constrained bones so they follow a {@link PathAttachment}.
+ *
+ * See [Path constraints](http://esotericsoftware.com/spine-path-constraints) in the Spine User Guide. */
+export class PathConstraint {
+    static NONE = -1;
+    static BEFORE = -2;
+    static AFTER = -3;
+    static epsilon = 0.00001;
+    /** The path constraint's setup pose data. */
+    data;
+    /** The bones that will be modified by this path constraint. */
+    bones;
+    /** The slot whose path attachment will be used to constrained the bones. */
+    target;
+    /** The position along the path. */
+    position = 0;
+    /** The spacing between bones. */
+    spacing = 0;
+    mixRotate = 0;
+    mixX = 0;
+    mixY = 0;
+    spaces = new Array();
+    positions = new Array();
+    world = new Array();
+    curves = new Array();
+    lengths = new Array();
+    segments = new Array();
+    active = false;
+    constructor(data, skeleton) {
+        if (!data)
+            throw new Error("data cannot be null.");
+        if (!skeleton)
+            throw new Error("skeleton cannot be null.");
+        this.data = data;
+        this.bones = new Array();
+        for (let i = 0, n = data.bones.length; i < n; i++) {
+            let bone = skeleton.findBone(data.bones[i].name);
+            if (!bone)
+                throw new Error(`Couldn't find bone ${data.bones[i].name}.`);
+            this.bones.push(bone);
+        }
+        let target = skeleton.findSlot(data.target.name);
+        if (!target)
+            throw new Error(`Couldn't find target bone ${data.target.name}`);
+        this.target = target;
+        this.position = data.position;
+        this.spacing = data.spacing;
+        this.mixRotate = data.mixRotate;
+        this.mixX = data.mixX;
+        this.mixY = data.mixY;
+    }
+    isActive() {
+        return this.active;
+    }
+    update() {
+        let attachment = this.target.getAttachment();
+        if (!(attachment instanceof PathAttachment))
+            return;
+        let mixRotate = this.mixRotate, mixX = this.mixX, mixY = this.mixY;
+        if (mixRotate == 0 && mixX == 0 && mixY == 0)
+            return;
+        let data = this.data;
+        let tangents = data.rotateMode == RotateMode.Tangent, scale = data.rotateMode == RotateMode.ChainScale;
+        let bones = this.bones;
+        let boneCount = bones.length, spacesCount = tangents ? boneCount : boneCount + 1;
+        let spaces = Utils.setArraySize(this.spaces, spacesCount), lengths = scale ? this.lengths = Utils.setArraySize(this.lengths, boneCount) : [];
+        let spacing = this.spacing;
+        switch (data.spacingMode) {
+            case SpacingMode.Percent:
+                if (scale) {
+                    for (let i = 0, n = spacesCount - 1; i < n; i++) {
+                        let bone = bones[i];
+                        let setupLength = bone.data.length;
+                        if (setupLength < PathConstraint.epsilon)
+                            lengths[i] = 0;
+                        else {
+                            let x = setupLength * bone.a, y = setupLength * bone.c;
+                            lengths[i] = Math.sqrt(x * x + y * y);
+                        }
+                    }
+                }
+                Utils.arrayFill(spaces, 1, spacesCount, spacing);
+                break;
+            case SpacingMode.Proportional:
+                let sum = 0;
+                for (let i = 0, n = spacesCount - 1; i < n;) {
+                    let bone = bones[i];
+                    let setupLength = bone.data.length;
+                    if (setupLength < PathConstraint.epsilon) {
+                        if (scale)
+                            lengths[i] = 0;
+                        spaces[++i] = spacing;
+                    }
+                    else {
+                        let x = setupLength * bone.a, y = setupLength * bone.c;
+                        let length = Math.sqrt(x * x + y * y);
+                        if (scale)
+                            lengths[i] = length;
+                        spaces[++i] = length;
+                        sum += length;
+                    }
+                }
+                if (sum > 0) {
+                    sum = spacesCount / sum * spacing;
+                    for (let i = 1; i < spacesCount; i++)
+                        spaces[i] *= sum;
+                }
+                break;
+            default:
+                let lengthSpacing = data.spacingMode == SpacingMode.Length;
+                for (let i = 0, n = spacesCount - 1; i < n;) {
+                    let bone = bones[i];
+                    let setupLength = bone.data.length;
+                    if (setupLength < PathConstraint.epsilon) {
+                        if (scale)
+                            lengths[i] = 0;
+                        spaces[++i] = spacing;
+                    }
+                    else {
+                        let x = setupLength * bone.a, y = setupLength * bone.c;
+                        let length = Math.sqrt(x * x + y * y);
+                        if (scale)
+                            lengths[i] = length;
+                        spaces[++i] = (lengthSpacing ? setupLength + spacing : spacing) * length / setupLength;
+                    }
+                }
+        }
+        let positions = this.computeWorldPositions(attachment, spacesCount, tangents);
+        let boneX = positions[0], boneY = positions[1], offsetRotation = data.offsetRotation;
+        let tip = false;
+        if (offsetRotation == 0)
+            tip = data.rotateMode == RotateMode.Chain;
+        else {
+            tip = false;
+            let p = this.target.bone;
+            offsetRotation *= p.a * p.d - p.b * p.c > 0 ? MathUtils.degRad : -MathUtils.degRad;
+        }
+        for (let i = 0, p = 3; i < boneCount; i++, p += 3) {
+            let bone = bones[i];
+            bone.worldX += (boneX - bone.worldX) * mixX;
+            bone.worldY += (boneY - bone.worldY) * mixY;
+            let x = positions[p], y = positions[p + 1], dx = x - boneX, dy = y - boneY;
+            if (scale) {
+                let length = lengths[i];
+                if (length != 0) {
+                    let s = (Math.sqrt(dx * dx + dy * dy) / length - 1) * mixRotate + 1;
+                    bone.a *= s;
+                    bone.c *= s;
+                }
+            }
+            boneX = x;
+            boneY = y;
+            if (mixRotate > 0) {
+                let a = bone.a, b = bone.b, c = bone.c, d = bone.d, r = 0, cos = 0, sin = 0;
+                if (tangents)
+                    r = positions[p - 1];
+                else if (spaces[i + 1] == 0)
+                    r = positions[p + 2];
+                else
+                    r = Math.atan2(dy, dx);
+                r -= Math.atan2(c, a);
+                if (tip) {
+                    cos = Math.cos(r);
+                    sin = Math.sin(r);
+                    let length = bone.data.length;
+                    boneX += (length * (cos * a - sin * c) - dx) * mixRotate;
+                    boneY += (length * (sin * a + cos * c) - dy) * mixRotate;
+                }
+                else {
+                    r += offsetRotation;
+                }
+                if (r > MathUtils.PI)
+                    r -= MathUtils.PI2;
+                else if (r < -MathUtils.PI) //
+                    r += MathUtils.PI2;
+                r *= mixRotate;
+                cos = Math.cos(r);
+                sin = Math.sin(r);
+                bone.a = cos * a - sin * c;
+                bone.b = cos * b - sin * d;
+                bone.c = sin * a + cos * c;
+                bone.d = sin * b + cos * d;
+            }
+            bone.updateAppliedTransform();
+        }
+    }
+    computeWorldPositions(path, spacesCount, tangents) {
+        let target = this.target;
+        let position = this.position;
+        let spaces = this.spaces, out = Utils.setArraySize(this.positions, spacesCount * 3 + 2), world = this.world;
+        let closed = path.closed;
+        let verticesLength = path.worldVerticesLength, curveCount = verticesLength / 6, prevCurve = PathConstraint.NONE;
+        if (!path.constantSpeed) {
+            let lengths = path.lengths;
+            curveCount -= closed ? 1 : 2;
+            let pathLength = lengths[curveCount];
+            if (this.data.positionMode == PositionMode.Percent)
+                position *= pathLength;
+            let multiplier;
+            switch (this.data.spacingMode) {
+                case SpacingMode.Percent:
+                    multiplier = pathLength;
+                    break;
+                case SpacingMode.Proportional:
+                    multiplier = pathLength / spacesCount;
+                    break;
+                default:
+                    multiplier = 1;
+            }
+            world = Utils.setArraySize(this.world, 8);
+            for (let i = 0, o = 0, curve = 0; i < spacesCount; i++, o += 3) {
+                let space = spaces[i] * multiplier;
+                position += space;
+                let p = position;
+                if (closed) {
+                    p %= pathLength;
+                    if (p < 0)
+                        p += pathLength;
+                    curve = 0;
+                }
+                else if (p < 0) {
+                    if (prevCurve != PathConstraint.BEFORE) {
+                        prevCurve = PathConstraint.BEFORE;
+                        path.computeWorldVertices(target, 2, 4, world, 0, 2);
+                    }
+                    this.addBeforePosition(p, world, 0, out, o);
+                    continue;
+                }
+                else if (p > pathLength) {
+                    if (prevCurve != PathConstraint.AFTER) {
+                        prevCurve = PathConstraint.AFTER;
+                        path.computeWorldVertices(target, verticesLength - 6, 4, world, 0, 2);
+                    }
+                    this.addAfterPosition(p - pathLength, world, 0, out, o);
+                    continue;
+                }
+                // Determine curve containing position.
+                for (;; curve++) {
+                    let length = lengths[curve];
+                    if (p > length)
+                        continue;
+                    if (curve == 0)
+                        p /= length;
+                    else {
+                        let prev = lengths[curve - 1];
+                        p = (p - prev) / (length - prev);
+                    }
+                    break;
+                }
+                if (curve != prevCurve) {
+                    prevCurve = curve;
+                    if (closed && curve == curveCount) {
+                        path.computeWorldVertices(target, verticesLength - 4, 4, world, 0, 2);
+                        path.computeWorldVertices(target, 0, 4, world, 4, 2);
+                    }
+                    else
+                        path.computeWorldVertices(target, curve * 6 + 2, 8, world, 0, 2);
+                }
+                this.addCurvePosition(p, world[0], world[1], world[2], world[3], world[4], world[5], world[6], world[7], out, o, tangents || (i > 0 && space == 0));
+            }
+            return out;
+        }
+        // World vertices.
+        if (closed) {
+            verticesLength += 2;
+            world = Utils.setArraySize(this.world, verticesLength);
+            path.computeWorldVertices(target, 2, verticesLength - 4, world, 0, 2);
+            path.computeWorldVertices(target, 0, 2, world, verticesLength - 4, 2);
+            world[verticesLength - 2] = world[0];
+            world[verticesLength - 1] = world[1];
+        }
+        else {
+            curveCount--;
+            verticesLength -= 4;
+            world = Utils.setArraySize(this.world, verticesLength);
+            path.computeWorldVertices(target, 2, verticesLength, world, 0, 2);
+        }
+        // Curve lengths.
+        let curves = Utils.setArraySize(this.curves, curveCount);
+        let pathLength = 0;
+        let x1 = world[0], y1 = world[1], cx1 = 0, cy1 = 0, cx2 = 0, cy2 = 0, x2 = 0, y2 = 0;
+        let tmpx = 0, tmpy = 0, dddfx = 0, dddfy = 0, ddfx = 0, ddfy = 0, dfx = 0, dfy = 0;
+        for (let i = 0, w = 2; i < curveCount; i++, w += 6) {
+            cx1 = world[w];
+            cy1 = world[w + 1];
+            cx2 = world[w + 2];
+            cy2 = world[w + 3];
+            x2 = world[w + 4];
+            y2 = world[w + 5];
+            tmpx = (x1 - cx1 * 2 + cx2) * 0.1875;
+            tmpy = (y1 - cy1 * 2 + cy2) * 0.1875;
+            dddfx = ((cx1 - cx2) * 3 - x1 + x2) * 0.09375;
+            dddfy = ((cy1 - cy2) * 3 - y1 + y2) * 0.09375;
+            ddfx = tmpx * 2 + dddfx;
+            ddfy = tmpy * 2 + dddfy;
+            dfx = (cx1 - x1) * 0.75 + tmpx + dddfx * 0.16666667;
+            dfy = (cy1 - y1) * 0.75 + tmpy + dddfy * 0.16666667;
+            pathLength += Math.sqrt(dfx * dfx + dfy * dfy);
+            dfx += ddfx;
+            dfy += ddfy;
+            ddfx += dddfx;
+            ddfy += dddfy;
+            pathLength += Math.sqrt(dfx * dfx + dfy * dfy);
+            dfx += ddfx;
+            dfy += ddfy;
+            pathLength += Math.sqrt(dfx * dfx + dfy * dfy);
+            dfx += ddfx + dddfx;
+            dfy += ddfy + dddfy;
+            pathLength += Math.sqrt(dfx * dfx + dfy * dfy);
+            curves[i] = pathLength;
+            x1 = x2;
+            y1 = y2;
+        }
+        if (this.data.positionMode == PositionMode.Percent)
+            position *= pathLength;
+        let multiplier;
+        switch (this.data.spacingMode) {
+            case SpacingMode.Percent:
+                multiplier = pathLength;
+                break;
+            case SpacingMode.Proportional:
+                multiplier = pathLength / spacesCount;
+                break;
+            default:
+                multiplier = 1;
+        }
+        let segments = this.segments;
+        let curveLength = 0;
+        for (let i = 0, o = 0, curve = 0, segment = 0; i < spacesCount; i++, o += 3) {
+            let space = spaces[i] * multiplier;
+            position += space;
+            let p = position;
+            if (closed) {
+                p %= pathLength;
+                if (p < 0)
+                    p += pathLength;
+                curve = 0;
+            }
+            else if (p < 0) {
+                this.addBeforePosition(p, world, 0, out, o);
+                continue;
+            }
+            else if (p > pathLength) {
+                this.addAfterPosition(p - pathLength, world, verticesLength - 4, out, o);
+                continue;
+            }
+            // Determine curve containing position.
+            for (;; curve++) {
+                let length = curves[curve];
+                if (p > length)
+                    continue;
+                if (curve == 0)
+                    p /= length;
+                else {
+                    let prev = curves[curve - 1];
+                    p = (p - prev) / (length - prev);
+                }
+                break;
+            }
+            // Curve segment lengths.
+            if (curve != prevCurve) {
+                prevCurve = curve;
+                let ii = curve * 6;
+                x1 = world[ii];
+                y1 = world[ii + 1];
+                cx1 = world[ii + 2];
+                cy1 = world[ii + 3];
+                cx2 = world[ii + 4];
+                cy2 = world[ii + 5];
+                x2 = world[ii + 6];
+                y2 = world[ii + 7];
+                tmpx = (x1 - cx1 * 2 + cx2) * 0.03;
+                tmpy = (y1 - cy1 * 2 + cy2) * 0.03;
+                dddfx = ((cx1 - cx2) * 3 - x1 + x2) * 0.006;
+                dddfy = ((cy1 - cy2) * 3 - y1 + y2) * 0.006;
+                ddfx = tmpx * 2 + dddfx;
+                ddfy = tmpy * 2 + dddfy;
+                dfx = (cx1 - x1) * 0.3 + tmpx + dddfx * 0.16666667;
+                dfy = (cy1 - y1) * 0.3 + tmpy + dddfy * 0.16666667;
+                curveLength = Math.sqrt(dfx * dfx + dfy * dfy);
+                segments[0] = curveLength;
+                for (ii = 1; ii < 8; ii++) {
+                    dfx += ddfx;
+                    dfy += ddfy;
+                    ddfx += dddfx;
+                    ddfy += dddfy;
+                    curveLength += Math.sqrt(dfx * dfx + dfy * dfy);
+                    segments[ii] = curveLength;
+                }
+                dfx += ddfx;
+                dfy += ddfy;
+                curveLength += Math.sqrt(dfx * dfx + dfy * dfy);
+                segments[8] = curveLength;
+                dfx += ddfx + dddfx;
+                dfy += ddfy + dddfy;
+                curveLength += Math.sqrt(dfx * dfx + dfy * dfy);
+                segments[9] = curveLength;
+                segment = 0;
+            }
+            // Weight by segment length.
+            p *= curveLength;
+            for (;; segment++) {
+                let length = segments[segment];
+                if (p > length)
+                    continue;
+                if (segment == 0)
+                    p /= length;
+                else {
+                    let prev = segments[segment - 1];
+                    p = segment + (p - prev) / (length - prev);
+                }
+                break;
+            }
+            this.addCurvePosition(p * 0.1, x1, y1, cx1, cy1, cx2, cy2, x2, y2, out, o, tangents || (i > 0 && space == 0));
+        }
+        return out;
+    }
+    addBeforePosition(p, temp, i, out, o) {
+        let x1 = temp[i], y1 = temp[i + 1], dx = temp[i + 2] - x1, dy = temp[i + 3] - y1, r = Math.atan2(dy, dx);
+        out[o] = x1 + p * Math.cos(r);
+        out[o + 1] = y1 + p * Math.sin(r);
+        out[o + 2] = r;
+    }
+    addAfterPosition(p, temp, i, out, o) {
+        let x1 = temp[i + 2], y1 = temp[i + 3], dx = x1 - temp[i], dy = y1 - temp[i + 1], r = Math.atan2(dy, dx);
+        out[o] = x1 + p * Math.cos(r);
+        out[o + 1] = y1 + p * Math.sin(r);
+        out[o + 2] = r;
+    }
+    addCurvePosition(p, x1, y1, cx1, cy1, cx2, cy2, x2, y2, out, o, tangents) {
+        if (p == 0 || isNaN(p)) {
+            out[o] = x1;
+            out[o + 1] = y1;
+            out[o + 2] = Math.atan2(cy1 - y1, cx1 - x1);
+            return;
+        }
+        let tt = p * p, ttt = tt * p, u = 1 - p, uu = u * u, uuu = uu * u;
+        let ut = u * p, ut3 = ut * 3, uut3 = u * ut3, utt3 = ut3 * p;
+        let x = x1 * uuu + cx1 * uut3 + cx2 * utt3 + x2 * ttt, y = y1 * uuu + cy1 * uut3 + cy2 * utt3 + y2 * ttt;
+        out[o] = x;
+        out[o + 1] = y;
+        if (tangents) {
+            if (p < 0.001)
+                out[o + 2] = Math.atan2(cy1 - y1, cx1 - x1);
+            else
+                out[o + 2] = Math.atan2(y - (y1 * uu + cy1 * ut * 2 + cy2 * tt), x - (x1 * uu + cx1 * ut * 2 + cx2 * tt));
+        }
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiUGF0aENvbnN0cmFpbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvUGF0aENvbnN0cmFpbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OzsrRUEyQitFO0FBRS9FLE9BQU8sRUFBRSxjQUFjLEVBQUUsTUFBTSxpQ0FBaUMsQ0FBQztBQUVqRSxPQUFPLEVBQXNCLFVBQVUsRUFBRSxXQUFXLEVBQUUsWUFBWSxFQUFFLE1BQU0seUJBQXlCLENBQUM7QUFJcEcsT0FBTyxFQUFFLEtBQUssRUFBRSxTQUFTLEVBQUUsTUFBTSxZQUFZLENBQUM7QUFHOUM7Ozt5R0FHeUc7QUFDekcsTUFBTSxPQUFPLGNBQWM7SUFDMUIsTUFBTSxDQUFDLElBQUksR0FBRyxDQUFDLENBQUMsQ0FBQztJQUFDLE1BQU0sQ0FBQyxNQUFNLEdBQUcsQ0FBQyxDQUFDLENBQUM7SUFBQyxNQUFNLENBQUMsS0FBSyxHQUFHLENBQUMsQ0FBQyxDQUFDO0lBQ3hELE1BQU0sQ0FBQyxPQUFPLEdBQUcsT0FBTyxDQUFDO0lBRXpCLDZDQUE2QztJQUM3QyxJQUFJLENBQXFCO0lBRXpCLCtEQUErRDtJQUMvRCxLQUFLLENBQWM7SUFFbkIsNEVBQTRFO0lBQzVFLE1BQU0sQ0FBTztJQUViLG1DQUFtQztJQUNuQyxRQUFRLEdBQUcsQ0FBQyxDQUFDO0lBRWIsaUNBQWlDO0lBQ2pDLE9BQU8sR0FBRyxDQUFDLENBQUM7SUFFWixTQUFTLEdBQUcsQ0FBQyxDQUFDO0lBRWQsSUFBSSxHQUFHLENBQUMsQ0FBQztJQUVULElBQUksR0FBRyxDQUFDLENBQUM7SUFFVCxNQUFNLEdBQUcsSUFBSSxLQUFLLEVBQVUsQ0FBQztJQUFDLFNBQVMsR0FBRyxJQUFJLEtBQUssRUFBVSxDQUFDO0lBQzlELEtBQUssR0FBRyxJQUFJLEtBQUssRUFBVSxDQUFDO0lBQUMsTUFBTSxHQUFHLElBQUksS0FBSyxFQUFVLENBQUM7SUFBQyxPQUFPLEdB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QVMsQ0FBQyxDQUFDLENBQUMsRUFBRSxLQUFLLEdBQUcsU0FBUyxDQUFDLENBQUMsQ0FBQyxFQUFFLGNBQWMsR0FBRyxJQUFJLENBQUMsY0FBYyxDQUFDO1FBQ3JGLElBQUksR0FBRyxHQUFHLEtBQUssQ0FBQztRQUNoQixJQUFJLGNBQWMsSUFBSSxDQUFDO1lBQ3RCLEdBQUcsR0FBRyxJQUFJLENBQUMsVUFBVSxJQUFJLFVBQVUsQ0FBQyxLQUFLLENBQUM7YUFDdEM7WUFDSixHQUFHLEdBQUcsS0FBSyxDQUFDO1lBQ1osSUFBSSxDQUFDLEdBQUcsSUFBSSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUM7WUFDekIsY0FBYyxJQUFJLENBQUMsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsR0FBRyxDQUFDLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxTQUFTLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQyxDQUFDLFNBQVMsQ0FBQyxNQUFNLENBQUM7U0FDbkY7UUFDRCxLQUFLLElBQUksQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsR0FBRyxTQUFTLEVBQUUsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxJQUFJLENBQUMsRUFBRTtZQUNsRCxJQUFJLElBQUksR0FBRyxLQUFLLENBQUMsQ0FBQyxDQUFDLENBQUM7WUFDcEIsSUFBSSxDQUFDLE1BQU0sSUFBSSxDQUFDLEtBQUssR0FBRyxJQUFJLENBQUMsTUFBTSxDQUFDLEdBQUcsSUFBSSxDQUFDO1lBQzVDLElBQUksQ0FBQyxNQUFNLElBQUksQ0FBQyxLQUFLLEdBQUcsSUFBSSxDQUFDLE1BQU0sQ0FBQyxHQUFHLElBQUksQ0FBQztZQUM1QyxJQUFJLENBQUMsR0FBRyxTQUFTLENBQUMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyxHQUFHLFNBQVMsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLEVBQUUsRUFBRSxHQUFHLENBQUMsR0FBRyxLQUFLLEVBQUUsRUFBRSxHQUFHLENB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R0FBRyxLQUFLLEdBQUcsVUFBVSxDQUFDO1lBQ3BELEdBQUcsR0FBRyxDQUFDLEdBQUcsR0FBRyxFQUFFLENBQUMsR0FBRyxJQUFJLEdBQUcsSUFBSSxHQUFHLEtBQUssR0FBRyxVQUFVLENBQUM7WUFDcEQsVUFBVSxJQUFJLElBQUksQ0FBQyxJQUFJLENBQUMsR0FBRyxHQUFHLEdBQUcsR0FBRyxHQUFHLEdBQUcsR0FBRyxDQUFDLENBQUM7WUFDL0MsR0FBRyxJQUFJLElBQUksQ0FBQztZQUNaLEdBQUcsSUFBSSxJQUFJLENBQUM7WUFDWixJQUFJLElBQUksS0FBSyxDQUFDO1lBQ2QsSUFBSSxJQUFJLEtBQUssQ0FBQztZQUNkLFVBQVUsSUFBSSxJQUFJLENBQUMsSUFBSSxDQUFDLEdBQUcsR0FBRyxHQUFHLEdBQUcsR0FBRyxHQUFHLEdBQUcsQ0FBQyxDQUFDO1lBQy9DLEdBQUcsSUFBSSxJQUFJLENBQUM7WUFDWixHQUFHLElBQUksSUFBSSxDQUFDO1lBQ1osVUFBVSxJQUFJLElBQUksQ0FBQyxJQUFJLENBQUMsR0FBRyxHQUFHLEdBQUcsR0FBRyxHQUFHLEdBQUcsR0FBRyxDQUFDLENBQUM7WUFDL0MsR0FBRyxJQUFJLElBQUksR0FBRyxLQUFLLENBQUM7WUFDcEIsR0FBRyxJQUFJLElBQUksR0FBRyxLQUFLLENBQUM7WUFDcEIsVUFBVSxJQUFJLElBQUksQ0FBQyxJQUFJLENBQUMsR0FBRyxHQUFHLEdBQUcsR0FBRyxHQUFHLEdBQUcsR0FBRyxDQUFDLENBQUM7WUFDL0MsTUFBTSxDQUFDLENBQUMsQ0FBQyxHQUFHLFVBQVUsQ0FBQztZQUN2QixFQUFFLEdBQUcsRUFBRSxDQUFDO1lBQ1IsRUFBRSxHQUFHLEVBQUUsQ0FBQztTQUNSO1FBRUQsSUFBSSxJQUFJLENBQUMsSUFBSSxDQUFDLFlBQVksSUFBSSxZQUFZLENBQUMsT0FBTztZQUFFLFFBQVEsSUFBSSxVQUFVLENBQUM7UUFFM0UsSUFBSSxVQUFVLENBQUM7UUFDZixRQUFRLElBQUksQ0FBQyxJQUFJLENBQUMsV0FBVyxFQUFFO1lBQzlC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

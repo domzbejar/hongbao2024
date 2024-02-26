@@ -1,0 +1,55 @@
+
+family-char.png
+size: 592, 592
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+msg1
+  rotate: true
+  xy: 400, 8
+  size: 244, 97
+  orig: 244, 97
+  offset: 0, 0
+  index: -1
+msg2
+  rotate: true
+  xy: 503, 8
+  size: 404, 86
+  orig: 404, 86
+  offset: 0, 0
+  index: -1
+new-asset/Layer 48
+  rotate: false
+  xy: 219, 25
+  size: 179, 227
+  orig: 181, 227
+  offset: 1, 0
+  index: -1
+new-asset/Layer 53
+  rotate: true
+  xy: 237, 414
+  size: 173, 331
+  orig: 175, 335
+  offset: 1, 3
+  index: -1
+new-asset/Layer 54
+  rotate: true
+  xy: 237, 254
+  size: 158, 264
+  orig: 160, 266
+  offset: 1, 1
+  index: -1
+new-asset/Layer 55
+  rotate: false
+  xy: 2, 2
+  size: 215, 280
+  orig: 216, 282
+  offset: 1, 1
+  index: -1
+new-asset/Layer 56
+  rotate: false
+  xy: 2, 284
+  size: 233, 303
+  orig: 235, 306
+  offset: 0, 2
+  index: -1

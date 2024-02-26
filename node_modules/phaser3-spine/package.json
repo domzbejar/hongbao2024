@@ -1,0 +1,19 @@
+{
+  "name": "phaser3-spine",
+  "version": "1.0.0",
+  "description": "phaser3-spine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qingyangmoke/phaser3-spine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qingyangmoke/phaser3-spine/issues"
+  },
+  "homepage": "https://github.com/qingyangmoke/phaser3-spine#readme"
+}

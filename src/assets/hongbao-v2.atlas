@@ -1,0 +1,55 @@
+
+hongbao-v2.png
+size: 180, 264
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+card
+  rotate: true
+  xy: 2, 83
+  size: 82, 109
+  orig: 84, 111
+  offset: 1, 1
+  index: -1
+coin-hole copy
+  rotate: false
+  xy: 113, 2
+  size: 63, 69
+  orig: 63, 69
+  offset: 0, 0
+  index: -1
+coin-stack
+  rotate: false
+  xy: 2, 5
+  size: 85, 76
+  orig: 86, 76
+  offset: 1, 0
+  index: -1
+envelope
+  rotate: true
+  xy: 2, 167
+  size: 92, 121
+  orig: 94, 123
+  offset: 1, 1
+  index: -1
+flop-close
+  rotate: true
+  xy: 125, 167
+  size: 92, 53
+  orig: 94, 55
+  offset: 1, 1
+  index: -1
+flop-open
+  rotate: true
+  xy: 113, 73
+  size: 92, 53
+  orig: 94, 55
+  offset: 1, 1
+  index: -1
+shadow
+  rotate: true
+  xy: 89, 7
+  size: 74, 22
+  orig: 80, 28
+  offset: 3, 3
+  index: -1

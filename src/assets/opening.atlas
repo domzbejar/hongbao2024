@@ -1,0 +1,321 @@
+
+opening.png
+size: 2104, 1460
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Vector Smart Object
+  rotate: true
+  xy: 776, 147
+  size: 66, 35
+  orig: 68, 37
+  offset: 1, 1
+  index: -1
+Vector Smart Object copy 4
+  rotate: true
+  xy: 776, 80
+  size: 65, 35
+  orig: 68, 37
+  offset: 2, 1
+  index: -1
+balls
+  rotate: true
+  xy: 1191, 2
+  size: 103, 58
+  orig: 105, 60
+  offset: 1, 1
+  index: -1
+bg
+  rotate: false
+  xy: 2, 722
+  size: 1268, 734
+  orig: 1270, 736
+  offset: 1, 1
+  index: -1
+boy1
+  rotate: true
+  xy: 1788, 176
+  size: 177, 248
+  orig: 179, 250
+  offset: 1, 1
+  index: -1
+boy3
+  rotate: false
+  xy: 1877, 849
+  size: 211, 239
+  orig: 213, 241
+  offset: 1, 1
+  index: -1
+chair 1
+  rotate: false
+  xy: 816, 354
+  size: 254, 366
+  orig: 256, 368
+  offset: 1, 1
+  index: -1
+chair 2
+  rotate: true
+  xy: 2, 70
+  size: 254, 366
+  orig: 256, 368
+  offset: 1, 1
+  index: -1
+chair 3
+  rotate: true
+  xy: 2, 70
+  size: 254, 366
+  orig: 256, 368
+  offset: 1, 1
+  index: -1
+chair 4
+  rotate: false
+  xy: 1632, 1090
+  size: 254, 366
+  orig: 256, 368
+  offset: 1, 1
+  index: -1
+chair 5
+  rotate: true
+  xy: 1632, 355
+  size: 217, 359
+  orig: 219, 361
+  offset: 1, 1
+  index: -1
+chopsticks
+  rotate: true
+  xy: 776, 215
+  size: 53, 36
+  orig: 55, 38
+  offset: 1, 1
+  index: -1
+chopsticks copy
+  rotate: true
+  xy: 776, 270
+  size: 54, 36
+  orig: 56, 38
+  offset: 1, 1
+  index: -1
+door 1
+  rotate: true
+  xy: 1272, 15
+  size: 243, 514
+  orig: 245, 516
+  offset: 1, 1
+  index: -1
+door 2
+  rotate: false
+  xy: 1632, 574
+  size: 243, 514
+  orig: 245, 516
+  offset: 1, 1
+  index: -1
+drink
+  rotate: false
+  xy: 346, 19
+  size: 22, 49
+  orig: 24, 51
+  offset: 1, 1
+  index: -1
+fish
+  rotate: false
+  xy: 370, 52
+  size: 181, 92
+  orig: 183, 94
+  offset: 1, 1
+  index: -1
+flower
+  rotate: true
+  xy: 1272, 260
+  size: 1196, 358
+  orig: 1198, 360
+  offset: 1, 1
+  index: -1
+hainanese
+  rotate: true
+  xy: 1191, 107
+  size: 134, 76
+  orig: 136, 78
+  offset: 1, 1
+  index: -1
+hot pot
+  rotate: true
+  xy: 1888, 1248
+  size: 208, 204
+  orig: 210, 206
+  offset: 1, 1
+  index: -1
+lantern 2
+  rotate: false
+  xy: 1072, 360
+  size: 79, 360
+  orig: 81, 362
+  offset: 1, 1
+  index: -1
+lantern 3
+  rotate: true
+  xy: 370, 146
+  size: 178, 404
+  orig: 180, 406
+  offset: 1, 1
+  index: -1
+line
+  rotate: false
+  xy: 370, 2
+  size: 342, 48
+  orig: 344, 50
+  offset: 1, 1
+  index: -1
+line copy
+  rotate: false
+  xy: 2, 20
+  size: 342, 48
+  orig: 344, 50
+  offset: 1, 1
+  index: -1
+msg1
+  rotate: true
+  xy: 1153, 446
+  size: 274, 109
+  orig: 274, 109
+  offset: 0, 0
+  index: -1
+msg2
+  rotate: false
+  xy: 816, 243
+  size: 454, 109
+  orig: 454, 109
+  offset: 0, 0
+  index: -1
+orange copy
+  rotate: false
+  xy: 753, 28
+  size: 40, 50
+  orig: 42, 52
+  offset: 1, 1
+  index: -1
+orange
+  rotate: false
+  xy: 753, 28
+  size: 40, 50
+  orig: 42, 52
+  offset: 1, 1
+  index: -1
+player1
+  rotate: true
+  xy: 814, 16
+  size: 225, 375
+  orig: 227, 377
+  offset: 1, 1
+  index: -1
+player5
+  rotate: true
+  xy: 1788, 12
+  size: 162, 233
+  orig: 164, 235
+  offset: 1, 1
+  index: -1
+player6
+  rotate: true
+  xy: 1888, 1091
+  size: 155, 213
+  orig: 157, 215
+  offset: 1, 1
+  index: -1
+rice copy 2
+  rotate: false
+  xy: 710, 85
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+rice
+  rotate: false
+  xy: 710, 85
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+rice copy
+  rotate: false
+  xy: 710, 85
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+rice copy 3
+  rotate: false
+  xy: 710, 85
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+rice copy 4
+  rotate: false
+  xy: 710, 85
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+sausage
+  rotate: true
+  xy: 2023, 64
+  size: 110, 76
+  orig: 112, 78
+  offset: 1, 1
+  index: -1
+sausage 2
+  rotate: false
+  xy: 1153, 361
+  size: 117, 83
+  orig: 119, 85
+  offset: 1, 1
+  index: -1
+siopao
+  rotate: false
+  xy: 1632, 263
+  size: 102, 90
+  orig: 104, 92
+  offset: 1, 1
+  index: -1
+smoke
+  rotate: false
+  xy: 1877, 619
+  size: 205, 228
+  orig: 205, 228
+  offset: 0, 0
+  index: -1
+soysauce copy 2
+  rotate: false
+  xy: 710, 61
+  size: 41, 22
+  orig: 43, 24
+  offset: 1, 1
+  index: -1
+soysauce
+  rotate: false
+  xy: 710, 61
+  size: 41, 22
+  orig: 43, 24
+  offset: 1, 1
+  index: -1
+soysauce copy
+  rotate: false
+  xy: 710, 61
+  size: 41, 22
+  orig: 43, 24
+  offset: 1, 1
+  index: -1
+table
+  rotate: false
+  xy: 2, 326
+  size: 812, 394
+  orig: 814, 396
+  offset: 1, 1
+  index: -1
+tofu
+  rotate: false
+  xy: 553, 54
+  size: 155, 90
+  orig: 157, 92
+  offset: 1, 1
+  index: -1

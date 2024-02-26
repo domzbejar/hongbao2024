@@ -1,0 +1,293 @@
+
+dinner-haven.png
+size: 1704, 1628
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Vector Smart Object
+  rotate: false
+  xy: 1380, 760
+  size: 66, 35
+  orig: 68, 37
+  offset: 1, 1
+  index: -1
+Vector Smart Object copy 4
+  rotate: true
+  xy: 1644, 551
+  size: 65, 35
+  orig: 68, 37
+  offset: 2, 1
+  index: -1
+balls
+  rotate: true
+  xy: 1644, 618
+  size: 103, 58
+  orig: 105, 60
+  offset: 1, 1
+  index: -1
+bg-moon
+  rotate: false
+  xy: 2, 1014
+  size: 1080, 610
+  orig: 1080, 610
+  offset: 0, 0
+  index: -1
+chair 1
+  rotate: false
+  xy: 1329, 1258
+  size: 254, 366
+  orig: 256, 368
+  offset: 1, 1
+  index: -1
+chair 2
+  rotate: true
+  xy: 518, 2
+  size: 254, 366
+  orig: 256, 368
+  offset: 1, 1
+  index: -1
+chair 3
+  rotate: true
+  xy: 518, 2
+  size: 254, 366
+  orig: 256, 368
+  offset: 1, 1
+  index: -1
+chair 4
+  rotate: true
+  xy: 886, 18
+  size: 254, 366
+  orig: 256, 368
+  offset: 1, 1
+  index: -1
+chair 5
+  rotate: true
+  xy: 1254, 55
+  size: 217, 359
+  orig: 219, 361
+  offset: 1, 1
+  index: -1
+chopsticks
+  rotate: true
+  xy: 1418, 705
+  size: 53, 36
+  orig: 55, 38
+  offset: 1, 1
+  index: -1
+chopsticks copy
+  rotate: true
+  xy: 1380, 704
+  size: 54, 36
+  orig: 56, 38
+  offset: 1, 1
+  index: -1
+door 1
+  rotate: false
+  xy: 1084, 1110
+  size: 243, 514
+  orig: 245, 516
+  offset: 1, 1
+  index: -1
+door 2
+  rotate: true
+  xy: 2, 13
+  size: 243, 514
+  orig: 245, 516
+  offset: 1, 1
+  index: -1
+drink
+  rotate: true
+  xy: 1550, 274
+  size: 22, 49
+  orig: 24, 51
+  offset: 1, 1
+  index: -1
+fish
+  rotate: true
+  xy: 1550, 540
+  size: 181, 92
+  orig: 183, 94
+  offset: 1, 1
+  index: -1
+flower
+  rotate: false
+  xy: 2, 654
+  size: 1196, 358
+  orig: 1198, 360
+  offset: 1, 1
+  index: -1
+hainanese
+  rotate: true
+  xy: 1615, 162
+  size: 134, 76
+  orig: 136, 78
+  offset: 1, 1
+  index: -1
+hot pot
+  rotate: false
+  xy: 1461, 723
+  size: 208, 204
+  orig: 210, 206
+  offset: 1, 1
+  index: -1
+lantern 2
+  rotate: false
+  xy: 1380, 797
+  size: 79, 360
+  orig: 81, 362
+  offset: 1, 1
+  index: -1
+lantern 3
+  rotate: false
+  xy: 1200, 704
+  size: 178, 404
+  orig: 180, 406
+  offset: 1, 1
+  index: -1
+line
+  rotate: false
+  xy: 1254, 5
+  size: 342, 48
+  orig: 344, 50
+  offset: 1, 1
+  index: -1
+line copy
+  rotate: false
+  xy: 1200, 654
+  size: 342, 48
+  orig: 344, 50
+  offset: 1, 1
+  index: -1
+msg1
+  rotate: false
+  xy: 1329, 1159
+  size: 244, 97
+  orig: 244, 97
+  offset: 0, 0
+  index: -1
+msg2
+  rotate: true
+  xy: 1585, 1220
+  size: 404, 86
+  orig: 404, 86
+  offset: 0, 0
+  index: -1
+orange copy
+  rotate: false
+  xy: 1624, 1168
+  size: 40, 50
+  orig: 42, 52
+  offset: 1, 1
+  index: -1
+orange
+  rotate: false
+  xy: 1624, 1168
+  size: 40, 50
+  orig: 42, 52
+  offset: 1, 1
+  index: -1
+rice copy 2
+  rotate: false
+  xy: 1575, 1159
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+rice
+  rotate: false
+  xy: 1575, 1159
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+rice copy
+  rotate: false
+  xy: 1575, 1159
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+rice copy 3
+  rotate: false
+  xy: 1575, 1159
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+rice copy 4
+  rotate: false
+  xy: 1575, 1159
+  size: 47, 59
+  orig: 49, 61
+  offset: 1, 1
+  index: -1
+sausage
+  rotate: true
+  xy: 1615, 50
+  size: 110, 76
+  orig: 112, 78
+  offset: 1, 1
+  index: -1
+sausage 2
+  rotate: false
+  xy: 1550, 298
+  size: 117, 83
+  orig: 119, 85
+  offset: 1, 1
+  index: -1
+siopao
+  rotate: false
+  xy: 1084, 1018
+  size: 102, 90
+  orig: 104, 92
+  offset: 1, 1
+  index: -1
+smoke
+  rotate: false
+  xy: 1461, 929
+  size: 205, 228
+  orig: 205, 228
+  offset: 0, 0
+  index: -1
+soysauce copy 2
+  rotate: false
+  xy: 1329, 1135
+  size: 41, 22
+  orig: 43, 24
+  offset: 1, 1
+  index: -1
+soysauce
+  rotate: false
+  xy: 1329, 1135
+  size: 41, 22
+  orig: 43, 24
+  offset: 1, 1
+  index: -1
+soysauce copy
+  rotate: false
+  xy: 1329, 1135
+  size: 41, 22
+  orig: 43, 24
+  offset: 1, 1
+  index: -1
+table
+  rotate: false
+  xy: 2, 258
+  size: 812, 394
+  orig: 814, 396
+  offset: 1, 1
+  index: -1
+table-2
+  rotate: false
+  xy: 816, 274
+  size: 732, 378
+  orig: 732, 378
+  offset: 0, 0
+  index: -1
+tofu
+  rotate: true
+  xy: 1550, 383
+  size: 155, 90
+  orig: 157, 92
+  offset: 1, 1
+  index: -1

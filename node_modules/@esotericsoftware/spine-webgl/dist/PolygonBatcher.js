@@ -1,0 +1,165 @@
+/******************************************************************************
+ * Spine Runtimes License Agreement
+ * Last updated July 28, 2023. Replaces all prior versions.
+ *
+ * Copyright (c) 2013-2023, Esoteric Software LLC
+ *
+ * Integration of the Spine Runtimes into software or otherwise creating
+ * derivative works of the Spine Runtimes is permitted under the terms and
+ * conditions of Section 2 of the Spine Editor License Agreement:
+ * http://esotericsoftware.com/spine-editor-license
+ *
+ * Otherwise, it is permitted to integrate the Spine Runtimes into software or
+ * otherwise create derivative works of the Spine Runtimes (collectively,
+ * "Products"), provided that each user of the Products must obtain their own
+ * Spine Editor license and redistribution of the Products in any form must
+ * include this license and copyright notice.
+ *
+ * THE SPINE RUNTIMES ARE PROVIDED BY ESOTERIC SOFTWARE LLC "AS IS" AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL ESOTERIC SOFTWARE LLC BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES,
+ * BUSINESS INTERRUPTION, OR LOSS OF USE, DATA, OR PROFITS) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE
+ * SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *****************************************************************************/
+import { Mesh, Position2Attribute, ColorAttribute, TexCoordAttribute, Color2Attribute } from "./Mesh.js";
+import { ManagedWebGLRenderingContext } from "./WebGL.js";
+const GL_ONE = 1;
+const GL_ONE_MINUS_SRC_COLOR = 0x0301;
+const GL_SRC_ALPHA = 0x0302;
+const GL_ONE_MINUS_SRC_ALPHA = 0x0303;
+const GL_ONE_MINUS_DST_ALPHA = 0x0305;
+const GL_DST_COLOR = 0x0306;
+export class PolygonBatcher {
+    static disableCulling = false;
+    context;
+    drawCalls = 0;
+    static globalDrawCalls = 0;
+    isDrawing = false;
+    mesh;
+    shader = null;
+    lastTexture = null;
+    verticesLength = 0;
+    indicesLength = 0;
+    srcColorBlend;
+    srcAlphaBlend;
+    dstBlend;
+    cullWasEnabled = false;
+    constructor(context, twoColorTint = true, maxVertices = 10920) {
+        if (maxVertices > 10920)
+            throw new Error("Can't have more than 10920 triangles per batch: " + maxVertices);
+        this.context = context instanceof ManagedWebGLRenderingContext ? context : new ManagedWebGLRenderingContext(context);
+        let attributes = twoColorTint ?
+            [new Position2Attribute(), new ColorAttribute(), new TexCoordAttribute(), new Color2Attribute()] :
+            [new Position2Attribute(), new ColorAttribute(), new TexCoordAttribute()];
+        this.mesh = new Mesh(context, attributes, maxVertices, maxVertices * 3);
+        let gl = this.context.gl;
+        this.srcColorBlend = gl.SRC_ALPHA;
+        this.srcAlphaBlend = gl.ONE;
+        this.dstBlend = gl.ONE_MINUS_SRC_ALPHA;
+    }
+    begin(shader) {
+        if (this.isDrawing)
+            throw new Error("PolygonBatch is already drawing. Call PolygonBatch.end() before calling PolygonBatch.begin()");
+        this.drawCalls = 0;
+        this.shader = shader;
+        this.lastTexture = null;
+        this.isDrawing = true;
+        let gl = this.context.gl;
+        gl.enable(gl.BLEND);
+        gl.blendFuncSeparate(this.srcColorBlend, this.dstBlend, this.srcAlphaBlend, this.dstBlend);
+        if (PolygonBatcher.disableCulling) {
+            this.cullWasEnabled = gl.isEnabled(gl.CULL_FACE);
+            if (this.cullWasEnabled)
+                gl.disable(gl.CULL_FACE);
+        }
+    }
+    static blendModesGL = [
+        { srcRgb: GL_SRC_ALPHA, srcRgbPma: GL_ONE, dstRgb: GL_ONE_MINUS_SRC_ALPHA, srcAlpha: GL_ONE },
+        { srcRgb: GL_SRC_ALPHA, srcRgbPma: GL_ONE, dstRgb: GL_ONE, srcAlpha: GL_ONE },
+        { srcRgb: GL_DST_COLOR, srcRgbPma: GL_DST_COLOR, dstRgb: GL_ONE_MINUS_SRC_ALPHA, srcAlpha: GL_ONE },
+        { srcRgb: GL_ONE, srcRgbPma: GL_ONE, dstRgb: GL_ONE_MINUS_SRC_COLOR, srcAlpha: GL_ONE }
+    ];
+    setBlendMode(blendMode, premultipliedAlpha) {
+        const blendModeGL = PolygonBatcher.blendModesGL[blendMode];
+        const srcColorBlend = premultipliedAlpha ? blendModeGL.srcRgbPma : blendModeGL.srcRgb;
+        const srcAlphaBlend = blendModeGL.srcAlpha;
+        const dstBlend = blendModeGL.dstRgb;
+        if (this.srcColorBlend == srcColorBlend && this.srcAlphaBlend == srcAlphaBlend && this.dstBlend == dstBlend)
+            return;
+        this.srcColorBlend = srcColorBlend;
+        this.srcAlphaBlend = srcAlphaBlend;
+        this.dstBlend = dstBlend;
+        if (this.isDrawing) {
+            this.flush();
+        }
+        let gl = this.context.gl;
+        gl.blendFuncSeparate(srcColorBlend, dstBlend, srcAlphaBlend, dstBlend);
+    }
+    draw(texture, vertices, indices) {
+        if (texture != this.lastTexture) {
+            this.flush();
+            this.lastTexture = texture;
+        }
+        else if (this.verticesLength + vertices.length > this.mesh.getVertices().length ||
+            this.indicesLength + indices.length > this.mesh.getIndices().length) {
+            this.flush();
+        }
+        let indexStart = this.mesh.numVertices();
+        this.mesh.getVertices().set(vertices, this.verticesLength);
+        this.verticesLength += vertices.length;
+        this.mesh.setVerticesLength(this.verticesLength);
+        let indicesArray = this.mesh.getIndices();
+        for (let i = this.indicesLength, j = 0; j < indices.length; i++, j++)
+            indicesArray[i] = indices[j] + indexStart;
+        this.indicesLength += indices.length;
+        this.mesh.setIndicesLength(this.indicesLength);
+    }
+    flush() {
+        if (this.verticesLength == 0)
+            return;
+        if (!this.lastTexture)
+            throw new Error("No texture set.");
+        if (!this.shader)
+            throw new Error("No shader set.");
+        this.lastTexture.bind();
+        this.mesh.draw(this.shader, this.context.gl.TRIANGLES);
+        this.verticesLength = 0;
+        this.indicesLength = 0;
+        this.mesh.setVerticesLength(0);
+        this.mesh.setIndicesLength(0);
+        this.drawCalls++;
+        PolygonBatcher.globalDrawCalls++;
+    }
+    end() {
+        if (!this.isDrawing)
+            throw new Error("PolygonBatch is not drawing. Call PolygonBatch.begin() before calling PolygonBatch.end()");
+        if (this.verticesLength > 0 || this.indicesLength > 0)
+            this.flush();
+        this.shader = null;
+        this.lastTexture = null;
+        this.isDrawing = false;
+        let gl = this.context.gl;
+        gl.disable(gl.BLEND);
+        if (PolygonBatcher.disableCulling) {
+            if (this.cullWasEnabled)
+                gl.enable(gl.CULL_FACE);
+        }
+    }
+    getDrawCalls() {
+        return this.drawCalls;
+    }
+    static getAndResetGlobalDrawCalls() {
+        let result = PolygonBatcher.globalDrawCalls;
+        PolygonBatcher.globalDrawCalls = 0;
+        return result;
+    }
+    dispose() {
+        this.mesh.dispose();
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiUG9seWdvbkJhdGNoZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvUG9seWdvbkJhdGNoZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OzsrRUEyQitFO0FBSS9FLE9BQU8sRUFBRSxJQUFJLEVBQUUsa0JBQWtCLEVBQUUsY0FBYyxFQUFFLGlCQUFpQixFQUFFLGVBQWUsRUFBRSxNQUFNLFdBQVcsQ0FBQztBQUV6RyxPQUFPLEVBQUUsNEJBQTRCLEVBQUUsTUFBTSxZQUFZLENBQUM7QUFFMUQsTUFBTSxNQUFNLEdBQUcsQ0FBQyxDQUFDO0FBQ2pCLE1BQU0sc0JBQXNCLEdBQUcsTUFBTSxDQUFDO0FBQ3RDLE1BQU0sWUFBWSxHQUFHLE1BQU0sQ0FBQztBQUM1QixNQUFNLHNCQUFzQixHQUFHLE1BQU0sQ0FBQztBQUN0QyxNQUFNLHNCQUFzQixHQUFHLE1BQU0sQ0FBQztBQUN0QyxNQUFNLFlBQVksR0FBRyxNQUFNLENBQUM7QUFFNUIsTUFBTSxPQUFPLGNBQWM7SUFDbkIsTUFBTSxDQUFDLGNBQWMsR0FBRyxLQUFLLENBQUM7SUFFN0IsT0FBTyxDQUErQjtJQUN0QyxTQUFTLEdBQUcsQ0FBQyxDQUFDO0lBQ2QsTUFBTSxDQUFDLGVBQWUsR0FBRyxDQUFDLENBQUM7SUFDbkMsU0FBUyxHQUFHLEtBQUssQ0FBQztJQUNWLElBQUksQ0FBTztJQUNYLE1BQU0sR0FBa0IsSUFBSSxDQUFDO0lBQzdCLFdBQVcsR0FBcUIsSUFBSSxDQUFDO0lBQ3JDLGNBQWMsR0FBRyxDQUFDLENBQUM7SUFDbkIsYUFBYSxHQUFHLENBQUMsQ0FBQztJQUNsQixhQUFhLENBQVM7SUFDdEIsYUFBYSxDQUFTO0lBQ3RCLFFBQVEsQ0FBUztJQUNqQixjQUFjLEdBQUcsS0FBSyxDQUFDO0lBRS9CLFlBQWEsT0FBNkQsRUFBRSxlQUF3QixJQUFJLEVBQUUsY0FBc0IsS0FBSztRQUNwSSxJQUFJLFdBQVcsR0FB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

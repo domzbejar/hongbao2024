@@ -1,0 +1,167 @@
+{
+	"textures": [
+		{
+			"image": "characters.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 592,
+				"h": 592
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "player1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 225,
+						"h": 375
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 225,
+						"h": 375
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 225,
+						"h": 375
+					}
+				},
+				{
+					"filename": "player6.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 155,
+						"h": 213
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 155,
+						"h": 213
+					},
+					"frame": {
+						"x": 1,
+						"y": 378,
+						"w": 155,
+						"h": 213
+					}
+				},
+				{
+					"filename": "hand-open.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 78,
+						"h": 203
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 78,
+						"h": 203
+					},
+					"frame": {
+						"x": 158,
+						"y": 378,
+						"w": 78,
+						"h": 203
+					}
+				},
+				{
+					"filename": "player4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 177,
+						"h": 248
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 177,
+						"h": 248
+					},
+					"frame": {
+						"x": 228,
+						"y": 1,
+						"w": 177,
+						"h": 248
+					}
+				},
+				{
+					"filename": "player5.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 162,
+						"h": 233
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 162,
+						"h": 233
+					},
+					"frame": {
+						"x": 407,
+						"y": 1,
+						"w": 162,
+						"h": 233
+					}
+				},
+				{
+					"filename": "player2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 211,
+						"h": 239
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 211,
+						"h": 239
+					},
+					"frame": {
+						"x": 238,
+						"y": 251,
+						"w": 211,
+						"h": 239
+					}
+				},
+				{
+					"filename": "hand-close.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 80,
+						"h": 184
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 80,
+						"h": 184
+					},
+					"frame": {
+						"x": 451,
+						"y": 236,
+						"w": 80,
+						"h": 184
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:d99db49b6a15e1b5d8463abfe5dcd12a:6b52cc05e582bac8d77ba7330f586fc7:a5fe7db4b869eb0f3e0b2940b9577ea8$"
+	}
+}

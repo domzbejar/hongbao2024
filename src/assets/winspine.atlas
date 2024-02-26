@@ -1,0 +1,97 @@
+
+winspine.png
+size: 884, 460
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+gold coin
+  rotate: false
+  xy: 613, 149
+  size: 65, 63
+  orig: 67, 65
+  offset: 1, 1
+  index: -1
+gold coin1
+  rotate: false
+  xy: 688, 7
+  size: 74, 79
+  orig: 76, 81
+  offset: 1, 1
+  index: -1
+gold coin2
+  rotate: false
+  xy: 688, 151
+  size: 61, 61
+  orig: 63, 63
+  offset: 1, 1
+  index: -1
+gold coin3
+  rotate: false
+  xy: 688, 88
+  size: 61, 61
+  orig: 63, 63
+  offset: 1, 1
+  index: -1
+gold coin4
+  rotate: false
+  xy: 764, 44
+  size: 57, 60
+  orig: 59, 62
+  offset: 1, 1
+  index: -1
+gold coin5
+  rotate: true
+  xy: 823, 56
+  size: 48, 51
+  orig: 50, 53
+  offset: 1, 1
+  index: -1
+hong-bao
+  rotate: false
+  xy: 2, 8
+  size: 609, 449
+  orig: 611, 451
+  offset: 1, 1
+  index: -1
+lantern
+  rotate: false
+  xy: 763, 219
+  size: 114, 128
+  orig: 116, 130
+  offset: 1, 1
+  index: -1
+lantern copy
+  rotate: true
+  xy: 613, 324
+  size: 133, 148
+  orig: 135, 150
+  offset: 1, 1
+  index: -1
+small hongbao
+  rotate: false
+  xy: 613, 2
+  size: 73, 102
+  orig: 75, 104
+  offset: 1, 1
+  index: -1
+small hongbao1
+  rotate: true
+  xy: 613, 214
+  size: 108, 137
+  orig: 110, 139
+  offset: 1, 1
+  index: -1
+small hongbao2
+  rotate: false
+  xy: 752, 106
+  size: 114, 111
+  orig: 116, 113
+  offset: 1, 1
+  index: -1
+small hongbao3
+  rotate: true
+  xy: 763, 349
+  size: 108, 118
+  orig: 110, 120
+  offset: 1, 1
+  index: -1

@@ -1,0 +1,27 @@
+
+scroll.png
+size: 504, 164
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+images/paper
+  rotate: false
+  xy: 2, 33
+  size: 499, 129
+  orig: 499, 129
+  offset: 0, 0
+  index: -1
+images/roll1
+  rotate: true
+  xy: 2, 2
+  size: 29, 191
+  orig: 29, 191
+  offset: 0, 0
+  index: -1
+images/roll2
+  rotate: true
+  xy: 2, 2
+  size: 29, 191
+  orig: 29, 191
+  offset: 0, 0
+  index: -1

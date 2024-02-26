@@ -1,0 +1,251 @@
+{
+	"textures": [
+		{
+			"image": "room-selection-main.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 487,
+				"h": 1481
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "btn-enter-act.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 134,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 134,
+						"h": 47
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 134,
+						"h": 47
+					}
+				},
+				{
+					"filename": "btn-enter.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 134,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 134,
+						"h": 50
+					},
+					"frame": {
+						"x": 137,
+						"y": 1,
+						"w": 134,
+						"h": 50
+					}
+				},
+				{
+					"filename": "title.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 485,
+						"h": 191
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 485,
+						"h": 191
+					},
+					"frame": {
+						"x": 1,
+						"y": 53,
+						"w": 485,
+						"h": 191
+					}
+				},
+				{
+					"filename": "btn-room-1-act.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 226,
+						"h": 328
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 9,
+						"w": 184,
+						"h": 286
+					},
+					"frame": {
+						"x": 1,
+						"y": 246,
+						"w": 184,
+						"h": 286
+					}
+				},
+				{
+					"filename": "btn-room-10-act.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 226,
+						"h": 328
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 9,
+						"w": 184,
+						"h": 286
+					},
+					"frame": {
+						"x": 187,
+						"y": 246,
+						"w": 184,
+						"h": 286
+					}
+				},
+				{
+					"filename": "btn-room-100-act.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 226,
+						"h": 328
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 9,
+						"w": 184,
+						"h": 286
+					},
+					"frame": {
+						"x": 1,
+						"y": 534,
+						"w": 184,
+						"h": 286
+					}
+				},
+				{
+					"filename": "btn-room-50-act.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 226,
+						"h": 328
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 9,
+						"w": 184,
+						"h": 286
+					},
+					"frame": {
+						"x": 187,
+						"y": 534,
+						"w": 184,
+						"h": 286
+					}
+				},
+				{
+					"filename": "btn-room-1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 226,
+						"h": 328
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 226,
+						"h": 328
+					},
+					"frame": {
+						"x": 1,
+						"y": 822,
+						"w": 226,
+						"h": 328
+					}
+				},
+				{
+					"filename": "btn-room-10.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 226,
+						"h": 328
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 226,
+						"h": 328
+					},
+					"frame": {
+						"x": 229,
+						"y": 822,
+						"w": 226,
+						"h": 328
+					}
+				},
+				{
+					"filename": "btn-room-100.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 226,
+						"h": 328
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 226,
+						"h": 328
+					},
+					"frame": {
+						"x": 1,
+						"y": 1152,
+						"w": 226,
+						"h": 328
+					}
+				},
+				{
+					"filename": "btn-room-50.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 226,
+						"h": 328
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 226,
+						"h": 328
+					},
+					"frame": {
+						"x": 229,
+						"y": 1152,
+						"w": 226,
+						"h": 328
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:ffb0748f4e6a3a75dcdf135d78021413:aff6ef6cfa267562d74b208b77c2c0b1:cdf8196445dc2b4ae508dc4a3e75e45a$"
+	}
+}

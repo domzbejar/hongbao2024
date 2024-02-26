@@ -1,0 +1,237 @@
+
+god-spine.png
+size: 512, 568
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+arm-front-left
+  rotate: false
+  xy: 187, 20
+  size: 66, 65
+  orig: 68, 67
+  offset: 1, 1
+  index: -1
+arm-front-left-2
+  rotate: true
+  xy: 425, 340
+  size: 52, 85
+  orig: 54, 87
+  offset: 1, 1
+  index: -1
+arm-front-right
+  rotate: false
+  xy: 292, 2
+  size: 66, 65
+  orig: 68, 67
+  offset: 1, 1
+  index: -1
+arm-front-right-2
+  rotate: true
+  xy: 425, 286
+  size: 52, 85
+  orig: 54, 87
+  offset: 1, 1
+  index: -1
+arm-left-sideview
+  rotate: true
+  xy: 292, 69
+  size: 100, 71
+  orig: 102, 73
+  offset: 1, 1
+  index: -1
+arm-right-sideview
+  rotate: true
+  xy: 352, 287
+  size: 100, 71
+  orig: 102, 73
+  offset: 1, 1
+  index: -1
+body-back
+  rotate: false
+  xy: 2, 84
+  size: 169, 143
+  orig: 171, 145
+  offset: 1, 1
+  index: -1
+body-front
+  rotate: true
+  xy: 363, 394
+  size: 169, 143
+  orig: 171, 145
+  offset: 1, 1
+  index: -1
+body-sideview
+  rotate: false
+  xy: 215, 229
+  size: 135, 158
+  orig: 137, 160
+  offset: 1, 1
+  index: -1
+foot-back-left
+  rotate: true
+  xy: 360, 171
+  size: 57, 45
+  orig: 59, 47
+  offset: 1, 1
+  index: -1
+foot-back-right
+  rotate: false
+  xy: 451, 169
+  size: 56, 44
+  orig: 58, 46
+  offset: 1, 1
+  index: -1
+foot-front-left
+  rotate: true
+  xy: 352, 230
+  size: 55, 57
+  orig: 57, 59
+  offset: 1, 1
+  index: -1
+foot-front-right
+  rotate: false
+  xy: 440, 110
+  size: 55, 57
+  orig: 57, 59
+  offset: 1, 1
+  index: -1
+foot-left-sideview
+  rotate: true
+  xy: 147, 5
+  size: 77, 38
+  orig: 79, 40
+  offset: 1, 1
+  index: -1
+foot-right-sideview
+  rotate: true
+  xy: 147, 5
+  size: 77, 38
+  orig: 79, 40
+  offset: 1, 1
+  index: -1
+hairL
+  rotate: true
+  xy: 365, 70
+  size: 20, 64
+  orig: 22, 66
+  offset: 1, 1
+  index: -1
+hairR
+  rotate: true
+  xy: 440, 88
+  size: 20, 64
+  orig: 22, 66
+  offset: 1, 1
+  index: -1
+hand-back-left
+  rotate: false
+  xy: 397, 14
+  size: 44, 35
+  orig: 46, 37
+  offset: 1, 1
+  index: -1
+hand-back-right
+  rotate: true
+  xy: 255, 40
+  size: 45, 35
+  orig: 47, 37
+  offset: 1, 1
+  index: -1
+hand-front-left
+  rotate: false
+  xy: 431, 51
+  size: 45, 35
+  orig: 47, 37
+  offset: 1, 1
+  index: -1
+hand-front-left-2
+  rotate: false
+  xy: 407, 171
+  size: 42, 42
+  orig: 44, 44
+  offset: 1, 1
+  index: -1
+hand-front-right
+  rotate: true
+  xy: 360, 22
+  size: 45, 35
+  orig: 47, 37
+  offset: 1, 1
+  index: -1
+hand-front-right-2
+  rotate: false
+  xy: 443, 7
+  size: 42, 42
+  orig: 44, 44
+  offset: 1, 1
+  index: -1
+hand-left-sideview
+  rotate: false
+  xy: 255, 3
+  size: 35, 35
+  orig: 37, 37
+  offset: 1, 1
+  index: -1
+hand-right-sideview
+  rotate: false
+  xy: 255, 3
+  size: 35, 35
+  orig: 37, 37
+  offset: 1, 1
+  index: -1
+head-back
+  rotate: false
+  xy: 2, 229
+  size: 211, 156
+  orig: 213, 158
+  offset: 1, 1
+  index: -1
+head-front
+  rotate: false
+  xy: 2, 387
+  size: 211, 176
+  orig: 213, 178
+  offset: 1, 1
+  index: -1
+head-sideview
+  rotate: false
+  xy: 215, 389
+  size: 146, 174
+  orig: 148, 176
+  offset: 1, 1
+  index: -1
+shadow
+  rotate: false
+  xy: 173, 171
+  size: 185, 56
+  orig: 185, 56
+  offset: 0, 0
+  index: -1
+teasure-chest-front
+  rotate: false
+  xy: 2, 5
+  size: 143, 77
+  orig: 143, 77
+  offset: 0, 0
+  index: -1
+teasure-chest-sideview
+  rotate: false
+  xy: 365, 92
+  size: 73, 77
+  orig: 73, 77
+  offset: 0, 0
+  index: -1
+treasure-chest-front
+  rotate: false
+  xy: 173, 87
+  size: 117, 82
+  orig: 117, 82
+  offset: 0, 0
+  index: -1
+treasure-chest-sideview
+  rotate: true
+  xy: 411, 215
+  size: 69, 80
+  orig: 69, 80
+  offset: 0, 0
+  index: -1

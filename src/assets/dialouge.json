@@ -1,0 +1,293 @@
+{
+	"textures": [
+		{
+			"image": "dialouge.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 253,
+				"h": 402
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "cry.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 58,
+						"h": 58
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 58,
+						"h": 58
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 58,
+						"h": 58
+					}
+				},
+				{
+					"filename": "laugh.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 58,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 58,
+						"h": 64
+					},
+					"frame": {
+						"x": 58,
+						"y": 0,
+						"w": 58,
+						"h": 64
+					}
+				},
+				{
+					"filename": "sad.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 58,
+						"h": 58
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 58,
+						"h": 58
+					},
+					"frame": {
+						"x": 116,
+						"y": 0,
+						"w": 58,
+						"h": 58
+					}
+				},
+				{
+					"filename": "shock.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 58,
+						"h": 58
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 58,
+						"h": 58
+					},
+					"frame": {
+						"x": 174,
+						"y": 0,
+						"w": 58,
+						"h": 58
+					}
+				},
+				{
+					"filename": "celebrate.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 66,
+						"h": 71
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 66,
+						"h": 71
+					},
+					"frame": {
+						"x": 0,
+						"y": 64,
+						"w": 66,
+						"h": 71
+					}
+				},
+				{
+					"filename": "party.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 66,
+						"h": 71
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 66,
+						"h": 71
+					},
+					"frame": {
+						"x": 66,
+						"y": 64,
+						"w": 66,
+						"h": 71
+					}
+				},
+				{
+					"filename": "dialouge-0.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 119,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 119,
+						"h": 29
+					},
+					"frame": {
+						"x": 132,
+						"y": 64,
+						"w": 119,
+						"h": 29
+					}
+				},
+				{
+					"filename": "dialouge-2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 138,
+						"h": 35
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 138,
+						"h": 35
+					},
+					"frame": {
+						"x": 0,
+						"y": 135,
+						"w": 138,
+						"h": 35
+					}
+				},
+				{
+					"filename": "dialouge-3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 148,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 148,
+						"h": 29
+					},
+					"frame": {
+						"x": 0,
+						"y": 170,
+						"w": 148,
+						"h": 29
+					}
+				},
+				{
+					"filename": "dialouge-1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 158,
+						"h": 29
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 158,
+						"h": 29
+					},
+					"frame": {
+						"x": 0,
+						"y": 199,
+						"w": 158,
+						"h": 29
+					}
+				},
+				{
+					"filename": "dialouge-lose.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 232,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 232,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 228,
+						"w": 232,
+						"h": 32
+					}
+				},
+				{
+					"filename": "bubble-center.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 253,
+						"h": 81
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 253,
+						"h": 81
+					},
+					"frame": {
+						"x": 0,
+						"y": 260,
+						"w": 253,
+						"h": 81
+					}
+				},
+				{
+					"filename": "bubble.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 253,
+						"h": 61
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 253,
+						"h": 61
+					},
+					"frame": {
+						"x": 0,
+						"y": 341,
+						"w": 253,
+						"h": 61
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:0d7c136040a1511c0bc8045f72472d6c:308bd0adf9a9beb8cc88ad6ef82c860e:56393f927736dc4a51b25b8c1850df22$"
+	}
+}
